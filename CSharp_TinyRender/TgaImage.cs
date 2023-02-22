@@ -43,12 +43,6 @@ namespace CSharp_TinyRender
         //public static extern IntPtr buffer(IntPtr image);
         [DllImport(DLL, CallingConvention = CallingConvention.Cdecl)]
         public static extern void clear(IntPtr image);
-
-        public static TgaImage Tga_Create(int w, int h, int bpp)
-        {
-            IntPtr tga = tga_create(w, h, bpp);
-            return new TgaImage(tga);
-        }
     }
 
     //bpp
@@ -61,6 +55,11 @@ namespace CSharp_TinyRender
 
     public class TgaImage
     {
+        public static TgaImage Create(int w, int h, int bpp)
+        {
+            return new TgaImage(TgaImageExtern.tga_create(w, h, bpp));
+        }
+        
         private readonly IntPtr _tgaImage;
 
         public TgaImage(IntPtr tga)

@@ -7,14 +7,37 @@ namespace CSharp_TinyRender
         static TgaColor white = new TgaColor(255, 255, 255, 255);
         static TgaColor red = new TgaColor(255, 0, 0, 255);
 
+        const int width = 800;
+        const int height = 800;
+
         public static void Main(string[] args)
         {
-            var image = TgaImageExtern.Tga_Create(100, 100, (int)Format.RGB);
-            Line5(13, 20, 80, 40, image, white);
-            Line5(20, 13, 40, 80, image, red);
-            Line5(80, 40, 13, 20, image, red);
+            // var image = TgaImage.Create(100, 100, (int)Format.RGB);
+            // Line5(13, 20, 80, 40, image, white);
+            // Line5(20, 13, 40, 80, image, red);
+            // Line5(80, 40, 13, 20, image, red);
+            // image.flip_vertically(); // i want to have the origin at the left bottom corner of the image
+            // image.write_tga_file("attempt5.tga");
+
+            var model = Model.Create("obj/african_head.obj");
+            var image = TgaImage.Create(width, height, (int)Format.RGB);
+            for (int i = 0; i < model.nfaces(); i++)
+            {
+                int[] face = model.face(i);
+                for (int j = 0; j < 3; j++)
+                {
+                    Vec3f v0 = model.vert(face[j]);
+                    Vec3f v1 = model.vert(face[(j + 1) % 3]);
+                    int x0 = (int)((v0.x + 1) * width / 2f);
+                    int y0 = (int)((v0.y + 1) * height / 2f);
+                    int x1 = (int)((v1.x + 1) * width / 2f);
+                    int y1 = (int)((v1.y + 1) * height / 2f);
+                    Line5(x0, y0, x1, y1, image, white);
+                }
+            }
+            
             image.flip_vertically(); // i want to have the origin at the left bottom corner of the image
-            image.write_tga_file("attempt5.tga");
+            image.write_tga_file("Wireframe.tga");
         }
 
         //First attempt 取决于0.01
