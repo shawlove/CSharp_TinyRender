@@ -23,14 +23,6 @@ namespace CSharp_TinyRender
         public static extern IntPtr face(IntPtr model, int idx,ref int count);
     }
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Vec3f
-    {
-        public float x;
-        public float y;
-        public float z;
-    }
-
     public class Model
     {
         public static Model Create(string fileName)
